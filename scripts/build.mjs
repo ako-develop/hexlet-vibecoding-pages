@@ -9,7 +9,11 @@ await mkdir('dist', { recursive: true });
 const html = await readFile('index.html', 'utf8');
 const escaped = base.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
 await writeFile('dist/index.html', html.replaceAll('__SITE_URL__', escaped));
-for (const path of ['styles.css', 'theme.js', 'assets']) await cp(path, `dist/${path}`, { recursive: true });
+await cp('business-card', 'dist/business-card', { recursive: true });
+const card = await readFile('business-card/index.html', 'utf8');
+await writeFile('dist/business-card/index.html', card.replaceAll('__SITE_URL__', `${escaped}/business-card`));
 await cp('dashboard', 'dist/dashboard', { recursive: true });
+// Сохраняем доступность ранее опубликованных адресов превью Telegram.
+await cp('business-card/assets', 'dist/assets', { recursive: true });
 await writeFile('dist/.nojekyll', '');
 console.log(`Страница подготовлена для ${base}/`);

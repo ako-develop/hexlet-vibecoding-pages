@@ -3,74 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Антон — от идеи к первой странице</title>
-  <meta name="description" content="Моя первая веб-визитка: знакомлюсь с HTML, CSS и JavaScript на курсе вайбкодинга.">
-  <!-- При публикации скрипт заменит __SITE_URL__ настоящим адресом GitHub Pages. -->
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="ru_RU">
-  <meta property="og:title" content="Антон — от идеи к первой странице">
-  <meta property="og:description" content="Знакомлюсь с вебом и превращаю идеи в работающие страницы. Мой первый проект на курсе вайбкодинга.">
-  <meta property="og:url" content="__SITE_URL__/">
-  <meta property="og:image" content="__SITE_URL__/assets/preview.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Абстрактная композиция: зелёный круг и ступени на тёмном фоне.">
-  <link rel="stylesheet" href="styles.css">
-  <script src="theme.js"></script>
+  <meta name="description" content="Учебные проекты Антона: визитка и дашборд курса валют и погоды в Москве.">
+  <title>Учебные проекты Антона</title>
+  <style>
+    :root{font-family:system-ui,sans-serif;color:#22281f;background:#f4f3ed;color-scheme:light}
+    *{box-sizing:border-box}body{margin:0}main{max-width:1080px;margin:auto;padding:64px 24px}
+    .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;color:#62685e}
+    h1{font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.1;letter-spacing:-.05em;margin:24px 0}
+    .intro{color:#62685e;line-height:1.7;max-width:600px;margin-bottom:40px}
+    .projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+    article{background:#fff;border:1px solid #d4d7cd;border-radius:18px;padding:32px;display:flex;flex-direction:column;align-items:flex-start}
+    .tag{font-size:.75rem;letter-spacing:.1em;color:#62685e;text-transform:uppercase}
+    h2{font-size:1.65rem;line-height:1.3;margin:20px 0 12px}article p{color:#62685e;line-height:1.7;margin:0 0 28px}
+    a{display:inline-block;background:#28392c;color:#fff;text-decoration:none;padding:14px 20px;border-radius:8px;margin-top:auto;font-weight:600}
+    a:hover{background:#405c46}a:focus-visible{outline:3px solid #799b3b;outline-offset:5px}
+    footer{margin-top:40px;padding-top:20px;border-top:1px solid #d4d7cd;color:#62685e;font-size:.85rem}
+    @media(max-width:640px){main{padding:36px 20px}.projects{grid-template-columns:1fr}article{padding:24px}}
+  </style>
 </head>
 <body>
-  <header class="topbar wrap">
-    <a class="brand" href="#home" aria-label="На главную">а<span>.</span></a>
-    <span class="edition">Личная страница / 2026</span>
-    <a class="text-link project-nav" href="dashboard/">Курс валют и погода ↗</a>
-    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Включить тёмную тему" aria-pressed="false">Тёмная тема <span aria-hidden="true">◐</span></button>
-  </header>
-  <main id="home" class="wrap">
-    <section class="hero" aria-labelledby="title">
-      <div class="intro">
-        <p class="eyebrow"><span class="dot"></span> Привет, я Антон</p>
-        <h1 id="title">От идеи<br>к первой<br><em>странице.</em></h1>
-        <p class="lead">Изучаю веб на курсе вайбкодинга. Пробую, разбираюсь и собираю свой первый цифровой уголок.</p>
-        <a class="button" href="#consultation">Записаться <span aria-hidden="true">↗</span></a>
-      </div>
-      <div class="art" aria-label="Абстрактная композиция с кругом и ступенями" role="img">
-        <span class="art-label">IDEA → WEB</span>
-        <div class="orb"></div><div class="steps"><i></i><i></i><i></i></div>
-        <span class="art-caption">Маленький шаг. Настоящее начало.</span>
-        <span class="art-number">01 / ∞</span>
-      </div>
-    </section>
-    <section id="projects" class="projects" aria-labelledby="projects-title">
-      <div><p class="eyebrow">Самостоятельная работа</p><h2 id="projects-title">Мои проекты</h2></div>
-      <article class="project-card">
-        <span class="number">API / JavaScript</span>
-        <h3>Курс валют и погода в Москве</h3>
-        <p>USD и EUR по курсу ЦБ, температура и осадки из Open-Meteo. Данные загружаются при открытии и по кнопке «Обновить».</p>
-        <a class="button" href="dashboard/">Открыть дашборд <span aria-hidden="true">↗</span></a>
+  <main>
+    <p class="eyebrow">Антон · Hexlet · Вайбкодинг</p>
+    <h1>Мои учебные проекты</h1>
+    <p class="intro">Две самостоятельные работы. Выбери проект, чтобы открыть его страницу.</p>
+    <section class="projects" aria-label="Проекты">
+      <article>
+        <span class="tag">01 / HTML и CSS</span>
+        <h2>Визитка</h2>
+        <p>Личная страница с переключателем темы, превью для Telegram и формой записи на консультацию.</p>
+        <a href="business-card/">Открыть визитку ↗</a>
+      </article>
+      <article>
+        <span class="tag">02 / JavaScript и API</span>
+        <h2>Курс валют и погода в Москве</h2>
+        <p>Курсы USD и EUR по данным ЦБ, температура и осадки из Open-Meteo. Загрузка данных и обновление по кнопке.</p>
+        <a href="dashboard/">Открыть дашборд ↗</a>
       </article>
     </section>
-    <section id="about" class="about" aria-labelledby="about-title">
-      <div><p class="eyebrow">Немного обо мне</p><h2 id="about-title">Любопытство —<br>хорошая отправная точка.</h2></div>
-      <div class="about-text"><p>Эта визитка — мой учебный проект. Здесь я знакомлюсь с тем, как устроены страницы, как стили меняют их характер и как JavaScript добавляет реакцию на действия.</p><p>Попробуйте кнопку темы в углу. Страница запомнит ваш выбор при следующем визите.</p><a class="text-link" href="https://code-basics.com/ru">Учиться вместе на Code Basics <span aria-hidden="true">↗</span></a></div>
-    </section>
-    <section id="consultation" class="consultation" aria-labelledby="consultation-title">
-      <div class="consultation-intro">
-        <p class="eyebrow">Давайте обсудим вашу идею</p>
-        <h2 id="consultation-title">Записаться<br>на консультацию.</h2>
-        <p class="consultation-copy">Оставьте имя и контакт в форме — чтобы договориться о встрече.</p>
-        <p class="consultation-hint">Учебная форма для практики. Для тестовой заявки можно использовать вымышленное имя и email.</p>
-        <a class="text-link" href="https://forms.yandex.ru/u/6ae9a92f95add55e32ae1525/" target="_blank" rel="noopener">Открыть форму отдельно ↗</a>
-      </div>
-      <div class="form-panel">
-        <iframe class="consultation-form" src="https://forms.yandex.ru/u/6ae9a92f95add55e32ae1525/?iframe=1&amp;theme=light" name="ya-form-6ae9a92f95add55e32ae1525" title="Запись на консультацию — имя и контакт" width="100%" height="720" loading="lazy"></iframe>
-      </div>
-    </section>
-    <section class="notes" aria-label="Из чего состоит страница">
-      <article><span class="number">01 / HTML</span><h3>Смысл и структура</h3><p>Заголовки, абзацы и ссылки — каркас этой страницы.</p></article>
-      <article><span class="number">02 / CSS</span><h3>Форма и настроение</h3><p>Цвета, типографика и пространство делают её узнаваемой.</p></article>
-      <article><span class="number">03 / JavaScript</span><h3>Ответ на действие</h3><p>Один клик меняет тему, а браузер сохраняет выбор.</p></article>
-    </section>
+    <footer>Учебные проекты · GitHub Pages</footer>
   </main>
-  <footer class="wrap footer"><span>Антон · Учебный проект</span><a href="#home">К началу ↑</a><span>Сделано с любопытством</span></footer>
 </body>
 </html>

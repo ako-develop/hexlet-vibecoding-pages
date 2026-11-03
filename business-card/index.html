@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Антон — от идеи к первой странице</title>
+  <meta name="description" content="Моя первая веб-визитка: знакомлюсь с HTML, CSS и JavaScript на курсе вайбкодинга.">
+  <!-- При публикации скрипт заменит __SITE_URL__ настоящим адресом GitHub Pages. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="Антон — от идеи к первой странице">
+  <meta property="og:description" content="Знакомлюсь с вебом и превращаю идеи в работающие страницы. Мой первый проект на курсе вайбкодинга.">
+  <meta property="og:url" content="__SITE_URL__/">
+  <meta property="og:image" content="__SITE_URL__/assets/preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Абстрактная композиция: зелёный круг и ступени на тёмном фоне.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <header class="topbar wrap">
+    <a class="brand" href="#home" aria-label="На главную">а<span>.</span></a>
+    <span class="edition">Личная страница / 2026</span>
+    <a class="text-link project-nav" href="../">Все проекты ↗</a>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Включить тёмную тему" aria-pressed="false">Тёмная тема <span aria-hidden="true">◐</span></button>
+  </header>
+  <main id="home" class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div class="intro">
+        <p class="eyebrow"><span class="dot"></span> Привет, я Антон</p>
+        <h1 id="title">От идеи<br>к первой<br><em>странице.</em></h1>
+        <p class="lead">Изучаю веб на курсе вайбкодинга. Пробую, разбираюсь и собираю свой первый цифровой уголок.</p>
+        <a class="button" href="#consultation">Записаться <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="art" aria-label="Абстрактная композиция с кругом и ступенями" role="img">
+        <span class="art-label">IDEA → WEB</span>
+        <div class="orb"></div><div class="steps"><i></i><i></i><i></i></div>
+        <span class="art-caption">Маленький шаг. Настоящее начало.</span>
+        <span class="art-number">01 / ∞</span>
+      </div>
+    </section>
+    <section id="projects" class="projects" aria-labelledby="projects-title">
+      <div><p class="eyebrow">Самостоятельная работа</p><h2 id="projects-title">Мои проекты</h2></div>
+      <article class="project-card">
+        <span class="number">API / JavaScript</span>
+        <h3>Курс валют и погода в Москве</h3>
+        <p>USD и EUR по курсу ЦБ, температура и осадки из Open-Meteo. Данные загружаются при открытии и по кнопке «Обновить».</p>
+        <a class="button" href="../dashboard/">Открыть дашборд <span aria-hidden="true">↗</span></a>
+      </article>
+    </section>
+    <section id="about" class="about" aria-labelledby="about-title">
+      <div><p class="eyebrow">Немного обо мне</p><h2 id="about-title">Любопытство —<br>хорошая отправная точка.</h2></div>
+      <div class="about-text"><p>Эта визитка — мой учебный проект. Здесь я знакомлюсь с тем, как устроены страницы, как стили меняют их характер и как JavaScript добавляет реакцию на действия.</p><p>Попробуйте кнопку темы в углу. Страница запомнит ваш выбор при следующем визите.</p><a class="text-link" href="https://code-basics.com/ru">Учиться вместе на Code Basics <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section id="consultation" class="consultation" aria-labelledby="consultation-title">
+      <div class="consultation-intro">
+        <p class="eyebrow">Давайте обсудим вашу идею</p>
+        <h2 id="consultation-title">Записаться<br>на консультацию.</h2>
+        <p class="consultation-copy">Оставьте имя и контакт в форме — чтобы договориться о встрече.</p>
+        <p class="consultation-hint">Учебная форма для практики. Для тестовой заявки можно использовать вымышленное имя и email.</p>
+        <a class="text-link" href="https://forms.yandex.ru/u/6ae9a92f95add55e32ae1525/" target="_blank" rel="noopener">Открыть форму отдельно ↗</a>
+      </div>
+      <div class="form-panel">
+        <iframe class="consultation-form" src="https://forms.yandex.ru/u/6ae9a92f95add55e32ae1525/?iframe=1&amp;theme=light" name="ya-form-6ae9a92f95add55e32ae1525" title="Запись на консультацию — имя и контакт" width="100%" height="720" loading="lazy"></iframe>
+      </div>
+    </section>
+    <section class="notes" aria-label="Из чего состоит страница">
+      <article><span class="number">01 / HTML</span><h3>Смысл и структура</h3><p>Заголовки, абзацы и ссылки — каркас этой страницы.</p></article>
+      <article><span class="number">02 / CSS</span><h3>Форма и настроение</h3><p>Цвета, типографика и пространство делают её узнаваемой.</p></article>
+      <article><span class="number">03 / JavaScript</span><h3>Ответ на действие</h3><p>Один клик меняет тему, а браузер сохраняет выбор.</p></article>
+    </section>
+  </main>
+  <footer class="wrap footer"><span>Антон · Учебный проект</span><a href="#home">К началу ↑</a><span>Сделано с любопытством</span></footer>
+</body>
+</html>

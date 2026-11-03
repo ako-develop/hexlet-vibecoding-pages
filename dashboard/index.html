@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Курс USD и EUR по данным ЦБ и погода в Москве из Open-Meteo.">
+  <title>Курс валют и погода в Москве</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #183d36; background: #f1f4ef; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1040px; margin: auto; padding: 64px 24px; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 40px; }
+    .eyebrow { font-size: .75rem; text-transform: uppercase; letter-spacing: .16em; font-weight: 700; color: #52665d; }
+    h1 { max-width: 650px; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; letter-spacing: -.045em; margin: 14px 0; }
+    .intro, .note { color: #52665d; line-height: 1.6; }
+    button { flex-shrink: 0; background: #164e40; color: #fff; border: 0; border-radius: 999px; padding: 14px 24px; font: inherit; font-weight: 600; cursor: pointer; }
+    button:hover { background: #103b30; }
+    button:focus-visible, a:focus-visible { outline: 3px solid #b96b20; outline-offset: 5px; }
+    button:disabled { opacity: .65; cursor: wait; }
+    .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .card { border: 1px solid #dce3d8; background: #fff; border-radius: 18px; padding: 24px; min-width: 0; }
+    .card h2 { font-size: .95rem; margin: 0 0 20px; font-weight: 500; }
+    .value { font-size: clamp(1.65rem, 3vw, 2.3rem); font-weight: 650; letter-spacing: -.04em; margin: 0 0 16px; min-height: 1.3em; overflow-wrap: anywhere; }
+    .source { font-size: .8rem; color: #52665d; margin: 0; }
+    a { color: inherit; text-underline-offset: 3px; }
+    .errors { display: grid; gap: 8px; margin-top: 16px; }
+    .error { margin: 0; border: 1px solid #e4bcb4; border-radius: 12px; padding: 14px 18px; background: #fff1ec; color: #8a3022; line-height: 1.5; }
+    [hidden] { display: none !important; }
+    .update { margin-top: 24px; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .update h2 { font-size: .9rem; font-weight: 500; margin: 0; }
+    #updated { font-weight: 600; }
+    #status { font-size: .9rem; min-height: 1.5em; }
+    .details { font-size: .85rem; line-height: 1.7; color: #52665d; }
+    footer { margin-top: 36px; border-top: 1px solid #d4ddd0; padding-top: 20px; font-size: .85rem; }
+    @media (max-width: 800px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } header { align-items: flex-start; flex-direction: column; } }
+    @media (max-width: 420px) { main { padding: 32px 16px; } .cards { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">Москва · Данные на каждый день</p>
+        <h1>Курс валют и погода в Москве</h1>
+        <p class="intro">Курсы в рублях и погода — в одном месте.</p>
+      </div>
+      <button id="refresh" type="button">Обновить</button>
+    </header>
+
+    <section class="cards" id="cards" aria-label="Курсы валют и погода" aria-busy="true">
+      <article class="card">
+        <h2>USD · Доллар США</h2>
+        <p class="value" id="usd">Загрузка…</p>
+        <p class="source"><a href="https://www.cbr-xml-daily.ru/daily_json.js" target="_blank" rel="noopener noreferrer">курс ЦБ</a> · за 1 USD</p>
+      </article>
+      <article class="card">
+        <h2>EUR · Евро</h2>
+        <p class="value" id="eur">Загрузка…</p>
+        <p class="source"><a href="https://www.cbr-xml-daily.ru/daily_json.js" target="_blank" rel="noopener noreferrer">курс ЦБ</a> · за 1 EUR</p>
+      </article>
+      <article class="card">
+        <h2>Температура</h2>
+        <p class="value" id="temperature">Загрузка…</p>
+        <p class="source"><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">погода Open-Meteo</a></p>
+      </article>
+      <article class="card">
+        <h2>Осадки</h2>
+        <p class="value" id="precipitation">Загрузка…</p>
+        <p class="source">Open-Meteo · за <span id="interval">текущий интервал</span></p>
+      </article>
+    </section>
+
+    <div class="errors" role="alert">
+      <p class="error" id="rates-error" hidden></p>
+      <p class="error" id="weather-error" hidden></p>
+    </div>
+    <section class="card update" aria-label="Время обновления">
+      <h2>Время обновления <span class="source">· МСК</span></h2>
+      <span id="updated">Ожидаем данные</span>
+    </section>
+    <p id="status" role="status" aria-live="polite">Загружаем данные из внешних API…</p>
+    <p class="details" id="rates-date"></p>
+    <p class="details" id="weather-date"></p>
+    <noscript><p class="error">Включи JavaScript в браузере, чтобы загрузить курсы валют и погоду.</p></noscript>
+    <footer class="note">данные получены из внешних API · <a href="https://www.cbr-xml-daily.ru/" target="_blank" rel="noopener noreferrer">CBR-XML-Daily</a> и <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></footer>
+  </main>
+  <script>
+    'use strict';
+
+    const RATES_URL = 'https://www.cbr-xml-daily.ru/daily_json.js';
+    const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6173&current=temperature_2m,precipitation&timezone=Europe%2FMoscow&temperature_unit=celsius&precipitation_unit=mm&timeformat=unixtime';
+    const byId = (id) => document.getElementById(id);
+    const number = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 });
+    const rubles = new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 4, maximumFractionDigits: 4 });
+    const dateTime = new Intl.DateTimeFormat('ru-RU', { timeZone: 'Europe/Moscow', dateStyle: 'short', timeStyle: 'medium' });
+    const dateOnly = new Intl.DateTimeFormat('ru-RU', { timeZone: 'Europe/Moscow', dateStyle: 'long' });
+    let loading = false;
+
+    async function requestJson(url) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      try {
+        const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    async function loadRates() {
+      try {
+        const data = await requestJson(RATES_URL);
+        const rates = ['USD', 'EUR'].map((code) => {
+          const currency = data.Valute?.[code];
+          if (!Number.isFinite(currency?.Value) || currency.Value <= 0 || !Number.isFinite(currency.Nominal) || currency.Nominal <= 0) {
+            throw new Error('Некорректный курс');
+          }
+          return currency.Value / currency.Nominal;
+        });
+        const date = new Date(data.Date);
+        if (!Number.isFinite(date.getTime())) throw new Error('Некорректная дата');
+        byId('usd').textContent = rubles.format(rates[0]);
+        byId('eur').textContent = rubles.format(rates[1]);
+        byId('rates-date').textContent = `Курс ЦБ на ${dateOnly.format(date)}. Дата может быть завтрашней: ЦБ устанавливает курс заранее.`;
+      } catch (error) {
+        byId('usd').textContent = 'Нет данных';
+        byId('eur').textContent = 'Нет данных';
+        showError('rates-error', 'Не удалось загрузить курсы валют. Проверь подключение к интернету и нажми «Обновить».');
+        throw error;
+      }
+    }
+
+    async function loadWeather() {
+      try {
+        const data = await requestJson(WEATHER_URL);
+        const current = data.current;
+        if (!Number.isFinite(current?.temperature_2m) || !Number.isFinite(current.precipitation) || current.precipitation < 0 || !Number.isFinite(current.time) || !Number.isFinite(current.interval) || current.interval <= 0) {
+          throw new Error('Некорректные данные погоды');
+        }
+        const weatherDate = new Date(current.time * 1000);
+        if (!Number.isFinite(weatherDate.getTime())) throw new Error('Некорректная дата');
+        byId('temperature').textContent = `${number.format(current.temperature_2m)} °C`;
+        byId('precipitation').textContent = `${number.format(current.precipitation)} мм`;
+        byId('interval').textContent = `${number.format(current.interval / 60)} мин`;
+        byId('weather-date').textContent = `Погода по данным Open-Meteo на ${dateTime.format(weatherDate)} МСК. Осадки включают дождь и снег.`;
+      } catch (error) {
+        byId('temperature').textContent = 'Нет данных';
+        byId('precipitation').textContent = 'Нет данных';
+        showError('weather-error', 'Не удалось загрузить погоду в Москве. Проверь подключение к интернету и нажми «Обновить».');
+        throw error;
+      }
+    }
+
+    function showError(id, message) {
+      byId(id).textContent = message;
+      byId(id).hidden = false;
+    }
+
+    async function refresh() {
+      if (loading) return;
+      loading = true;
+      byId('refresh').disabled = true;
+      byId('refresh').textContent = 'Обновляем…';
+      byId('cards').setAttribute('aria-busy', 'true');
+      for (const id of ['usd', 'eur', 'temperature', 'precipitation']) byId(id).textContent = 'Загрузка…';
+      for (const id of ['rates-error', 'weather-error']) byId(id).hidden = true;
+      for (const id of ['rates-date', 'weather-date']) byId(id).textContent = '';
+      byId('interval').textContent = 'текущий интервал';
+      byId('updated').textContent = 'Ожидаем данные';
+      byId('status').textContent = 'Загружаем данные из внешних API…';
+      try {
+        const results = await Promise.allSettled([loadRates(), loadWeather()]);
+        const successCount = results.filter((result) => result.status === 'fulfilled').length;
+        byId('updated').textContent = successCount ? dateTime.format(new Date()) : 'Не удалось обновить';
+        byId('status').textContent = successCount === 2
+          ? 'Данные обновлены.'
+          : successCount === 1 ? 'Обновлена часть данных. Один из источников недоступен.' : 'Источники недоступны. Проверь подключение и попробуй ещё раз.';
+      } finally {
+        loading = false;
+        byId('refresh').disabled = false;
+        byId('refresh').textContent = 'Обновить';
+        byId('cards').setAttribute('aria-busy', 'false');
+      }
+    }
+
+    byId('refresh').addEventListener('click', refresh);
+    refresh();
+  </script>
+</body>
+</html>

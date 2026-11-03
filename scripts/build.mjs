@@ -10,5 +10,6 @@ const html = await readFile('index.html', 'utf8');
 const escaped = base.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
 await writeFile('dist/index.html', html.replaceAll('__SITE_URL__', escaped));
 for (const path of ['styles.css', 'theme.js', 'assets']) await cp(path, `dist/${path}`, { recursive: true });
+await cp('dashboard', 'dist/dashboard', { recursive: true });
 await writeFile('dist/.nojekyll', '');
 console.log(`Страница подготовлена для ${base}/`);

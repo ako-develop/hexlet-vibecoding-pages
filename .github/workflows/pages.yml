@@ -45,7 +45,7 @@ jobs:
             if (!response.ok) throw new Error(`Status request failed: ${response.status}`);
             const { status } = await response.json();
             console.log(`Previous deployment status: ${status}`);
-            if (['updating_pages', 'deployment_in_progress', 'queued', 'waiting', 'building'].includes(status)) {
+            if (!['succeed', 'cancelled'].includes(status)) {
               const cancel = await fetch(`${endpoint}/cancel`, { method: 'POST', headers });
               if (!cancel.ok) throw new Error(`Cancellation failed: ${cancel.status}`);
               console.log('Cancelled stalled deployment.');

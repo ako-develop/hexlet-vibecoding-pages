@@ -15,3 +15,11 @@
 .form-panel{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;color-scheme:light}
 .consultation-form{display:block;width:100%;max-width:100%;height:720px;border:0}
 @media(max-width:760px){.consultation{grid-template-columns:1fr;gap:28px;padding:36px 0}}
+
+/* Оба скрипта amoCRM размещены внутри ограниченного по ширине блока. */
+.crm-request{border-top:1px solid var(--line);padding:56px 0;min-width:0}
+.crm-heading{margin-bottom:30px}
+.crm-heading .consultation-copy{max-width:560px}
+.crm-widget{width:100%;min-width:0;max-width:100%}
+.crm-widget iframe{display:block;width:100%!important;max-width:100%!important;border:0}
+@media(max-width:760px){.crm-request{padding:36px 0}}

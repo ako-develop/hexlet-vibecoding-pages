@@ -38,20 +38,10 @@ jobs:
           node --input-type=module <<'JS'
           const endpoint = 'https://api.github.com/repos/ako-develop/hexlet-vibecoding-pages/pages/deployments/77bb9508ebea5974bf61ebbb72b724b538041673';
           const headers = { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
-          const response = await fetch(endpoint, { headers });
-          if (response.status === 404) {
-            console.log('Previous deployment no longer exists.');
-          } else {
-            if (!response.ok) throw new Error(`Status request failed: ${response.status}`);
-            const { status } = await response.json();
-            console.log(`Previous deployment status: ${status}`);
-            if (!['succeed', 'cancelled'].includes(status)) {
-              const cancel = await fetch(`${endpoint}/cancel`, { method: 'POST', headers });
-              if (!cancel.ok) throw new Error(`Cancellation failed: ${cancel.status}`);
-              console.log('Cancelled stalled deployment.');
-              await new Promise(resolve => setTimeout(resolve, 10000));
-            }
-          }
+          const cancel = await fetch(`${endpoint}/cancel`, { method: 'POST', headers });
+          if (!cancel.ok && cancel.status !== 404) throw new Error(`Cancellation failed: ${cancel.status}`);
+          console.log(`Cancellation response: ${cancel.status}`);
+          await new Promise(resolve => setTimeout(resolve, 15000));
           JS
       - name: Deploy
         id: deployment
